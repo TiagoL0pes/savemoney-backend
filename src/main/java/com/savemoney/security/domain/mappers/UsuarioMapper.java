@@ -1,6 +1,7 @@
 package com.savemoney.security.domain.mappers;
 
 import com.savemoney.domain.models.ContaBancaria;
+import com.savemoney.domain.responses.UsuarioResponse;
 import com.savemoney.security.domain.models.Usuario;
 import com.savemoney.security.domain.requests.UsuarioRequest;
 import org.mapstruct.Mapper;
@@ -19,6 +20,8 @@ public interface UsuarioMapper {
     @Mapping(target = "conta", source = "request.contaBancaria.conta")
     @Mapping(target = "saldo", source = "request.contaBancaria.saldo")
     ContaBancaria toContaBancaria(UsuarioRequest request);
+
+    UsuarioResponse toUsuarioResponse(Usuario usuario);
 
     @Named("criptografarSenha")
     default String criptografarSenha(String senha, BCryptPasswordEncoder encoder) {

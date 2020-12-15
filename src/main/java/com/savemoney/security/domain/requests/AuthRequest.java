@@ -20,9 +20,9 @@ public class AuthRequest {
     private String email;
 
     @NotEmpty
-    private String password;
+    private String senha;
 
     public UsernamePasswordAuthenticationToken generateCredencials(Collection<? extends GrantedAuthority> authorities) {
-        return new UsernamePasswordAuthenticationToken(email, password, authorities);
+        return new UsernamePasswordAuthenticationToken(email, senha, authorities);
     }
 }

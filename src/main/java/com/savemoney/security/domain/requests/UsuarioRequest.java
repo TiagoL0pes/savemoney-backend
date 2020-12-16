@@ -1,12 +1,12 @@
 package com.savemoney.security.domain.requests;
 
 import com.savemoney.domain.requests.ContaBancariaRequest;
+import com.savemoney.validations.annotations.EmailNovoUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
@@ -15,8 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class UsuarioRequest {
 
-    @Email
-    @NotEmpty
+    @EmailNovoUsuario
     private String email;
 
     @NotEmpty

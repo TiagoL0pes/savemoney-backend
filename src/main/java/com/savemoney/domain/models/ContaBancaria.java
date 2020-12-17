@@ -1,6 +1,5 @@
 package com.savemoney.domain.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.savemoney.security.domain.models.Usuario;
 import com.savemoney.utils.exceptions.TransactionNotAllowedException;
 import lombok.Getter;
@@ -44,7 +43,6 @@ public class ContaBancaria implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contaBancaria")
     private List<Transacao> transacoes = new ArrayList<>();
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "contaBancaria")
     private Set<CartaoCredito> creditCards = new HashSet<>();
 

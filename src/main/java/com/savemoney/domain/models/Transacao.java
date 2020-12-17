@@ -41,12 +41,10 @@ public class Transacao implements Serializable {
     @JoinColumn(name = "fk_conta_bancaria")
     private ContaBancaria contaBancaria;
 
-    public Transacao(Long idTransacao,
-                     LocalDateTime dataEntrada,
+    public Transacao(LocalDateTime dataEntrada,
                      String descricao,
                      BigDecimal valor,
                      TipoTransacao tipoTransacao) {
-        this.idTransacao = idTransacao;
         this.dataEntrada = dataEntrada;
         this.descricao = descricao;
         this.valor = valor;

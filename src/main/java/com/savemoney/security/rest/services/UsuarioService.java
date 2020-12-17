@@ -55,9 +55,9 @@ public class UsuarioService {
         return usuario;
     }
 
-    public UsuarioResponse buscarPorId(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        return usuarioMapper.toUsuarioResponse(usuario);
+
     }
 }

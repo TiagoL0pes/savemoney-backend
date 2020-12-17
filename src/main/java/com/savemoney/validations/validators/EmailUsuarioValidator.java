@@ -13,7 +13,7 @@ import javax.validation.constraintvalidation.SupportedValidationTarget;
 import javax.validation.constraintvalidation.ValidationTarget;
 
 @SupportedValidationTarget(ValidationTarget.ANNOTATED_ELEMENT)
-public class NovoUsuarioValidator implements ConstraintValidator<EmailNovoUsuario, String> {
+public class EmailUsuarioValidator implements ConstraintValidator<EmailNovoUsuario, String> {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -33,15 +33,14 @@ public class NovoUsuarioValidator implements ConstraintValidator<EmailNovoUsuari
             throw new BadRequestException("Formato do e-mail está incorreto");
         }
 
-        boolean usuarioExistente = validarNovoUsuario(email);
-        if (usuarioExistente) {
+        if (emailJaCadastrado(email)) {
             throw new BadRequestException("Email informado já foi cadastrado");
         }
 
         return true;
     }
 
-    private boolean validarNovoUsuario(String email) {
+    private boolean emailJaCadastrado(String email) {
         return usuarioRepository.findByEmail(email).isPresent();
     }
 }

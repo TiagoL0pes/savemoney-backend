@@ -44,7 +44,7 @@ public class ContaBancaria implements Serializable {
     private List<Transacao> transacoes = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "contaBancaria")
-    private Set<CartaoCredito> creditCards = new HashSet<>();
+    private Set<CartaoCredito> cartoesCredito = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "fk_usuario")

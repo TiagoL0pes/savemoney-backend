@@ -80,18 +80,18 @@ public class CartaoCredito implements Serializable {
         }
     }
 
-    public void atualizarItemCartao(ItemCartao oldItem, ItemCartao newItem) {
-        itens.remove(oldItem);
-        atualizarLimiteDisponivel(oldItem);
-        itens.add(newItem);
+    public void atualizarItemCartao(ItemCartao itemAntigo, ItemCartao novoItem) {
+        itens.remove(itemAntigo);
+        atualizarLimiteDisponivel(itemAntigo);
+        itens.add(novoItem);
         atualizarLimiteUtilizado();
     }
 
-    private void atualizarLimiteDisponivel(ItemCartao cardItem) {
+    private void atualizarLimiteDisponivel(ItemCartao itemCartao) {
         itens = itens.stream()
-                .filter(item -> !item.getIdItemCartao().equals(cardItem.getIdItemCartao()))
+                .filter(item -> !item.getIdItemCartao().equals(itemCartao.getIdItemCartao()))
                 .collect(Collectors.toList());
 
-        limiteUtilizado = limiteUtilizado.subtract(cardItem.getValor());
+        limiteUtilizado = limiteUtilizado.subtract(itemCartao.getValor());
     }
 }

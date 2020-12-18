@@ -6,8 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum StatusPagamento {
 
-    PENDENT("Pendent"),
-    PAID("Paid");
+    PENDENTE("Pendente"),
+    PAGO("Pago");
 
     @Getter
     private String status;

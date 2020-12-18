@@ -45,8 +45,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(LOCAL_DB).permitAll()
-                .antMatchers(HttpMethod.POST, "/auth", "/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/banks").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth", "/usuarios").permitAll()
+                .antMatchers(HttpMethod.GET, "/bancos").permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(

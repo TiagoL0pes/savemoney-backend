@@ -30,7 +30,7 @@ public class ContaBancariaController extends AbstractController {
             Mappers.getMapper(ContaBancariaMapper.class);
 
     @PostMapping
-    public ResponseEntity<Void> add(@Valid @RequestBody ContaBancariaRequest request) {
+    public ResponseEntity<Void> adicionar(@Valid @RequestBody ContaBancariaRequest request) {
         ContaBancaria contaBancaria = contaBancariaFacade.adicionar(request);
 
         URI uri = montarURIPara("/{id}", contaBancaria.getIdContaBancaria());
@@ -46,7 +46,7 @@ public class ContaBancariaController extends AbstractController {
 
     @GetMapping
     public ResponseEntity<ContasBancariasPagination> listar(
-            @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+            @PageableDefault(sort = "idContaBancaria", direction = Sort.Direction.ASC) Pageable pageable) {
         ContasBancariasPagination pagination = contaBancariaFacade.listar(pageable);
         return ResponseEntity.ok(pagination);
     }

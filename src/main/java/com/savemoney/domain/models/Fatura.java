@@ -47,10 +47,10 @@ public class Fatura implements Serializable {
         this.parcelas = parcelas;
         this.statusPagamento = statusPagamento;
         this.dataVencimento = dataVencimento;
-        this.total = getInvoiceAmount();
+        this.total = getTotalFatura();
     }
 
-    private BigDecimal getInvoiceAmount() {
+    private BigDecimal getTotalFatura() {
         return parcelas.stream()
                 .map(Parcela::getValor)
                 .reduce(BigDecimal::add)

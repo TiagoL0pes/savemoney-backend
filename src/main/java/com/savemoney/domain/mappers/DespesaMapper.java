@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Mapper(imports = {LocalDate.class, StatusPagamento.class})
-public interface DespesaMapper {
+public interface DespesaMapper extends DefaultMapper {
 
     @Mapping(target = "dataEntrada", source = "request.dataEntrada", qualifiedByName = "salvarDataEntrada")
     @Mapping(target = "dataVencimento", source = "request.dataVencimento", qualifiedByName = "salvarDataVencimento")

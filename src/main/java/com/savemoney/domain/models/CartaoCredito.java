@@ -71,7 +71,7 @@ public class CartaoCredito implements Serializable {
     }
 
     private void atualizarLimiteUtilizado() {
-        limiteUtilizado = itens.stream().map(ItemCartao::getValor)
+        limiteUtilizado = itens.stream().map(ItemCartao::getValorTotal)
                 .reduce(BigDecimal::add)
                 .get();
 
@@ -92,6 +92,6 @@ public class CartaoCredito implements Serializable {
                 .filter(item -> !item.getIdItemCartao().equals(itemCartao.getIdItemCartao()))
                 .collect(Collectors.toList());
 
-        limiteUtilizado = limiteUtilizado.subtract(itemCartao.getValor());
+        limiteUtilizado = limiteUtilizado.subtract(itemCartao.getValorTotal());
     }
 }

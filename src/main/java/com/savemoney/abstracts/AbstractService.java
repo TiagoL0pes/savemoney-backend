@@ -13,6 +13,10 @@ public abstract class AbstractService {
     }
 
     protected BigDecimal validaNumero(BigDecimal numeroAtual, BigDecimal novoNumero) {
-        return Objects.isNull(novoNumero) ? numeroAtual : novoNumero.setScale(5, RoundingMode.HALF_UP);
+        return Objects.isNull(novoNumero) ? numeroAtual : novoNumero.setScale(5, RoundingMode.HALF_EVEN);
+    }
+
+    protected Integer validaNumero(Integer numeroAtual, Integer novoNumero) {
+        return Objects.isNull(novoNumero) ? numeroAtual : novoNumero;
     }
 }

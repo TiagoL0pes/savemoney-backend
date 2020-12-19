@@ -30,8 +30,8 @@ public class ItemCartao implements Serializable {
     @Column(name = "descricao", length = 20)
     private String descricao;
 
-    @Column(name = "valor", precision = 14, scale = 5)
-    private BigDecimal valor;
+    @Column(name = "valor_total", precision = 14, scale = 5)
+    private BigDecimal valorTotal;
 
     @Column(name = "numero_parcelas")
     private Integer numeroParcelas;
@@ -52,7 +52,7 @@ public class ItemCartao implements Serializable {
         this.idItemCartao = idItemCartao;
         this.dataCompra = dataCompra;
         this.descricao = descricao;
-        this.valor = valor;
+        this.valorTotal = valor;
         this.numeroParcelas = numeroParcelas;
     }
 
@@ -61,7 +61,7 @@ public class ItemCartao implements Serializable {
     }
 
     public BigDecimal getValorParcela() {
-        return valor.divide(new BigDecimal(numeroParcelas), RoundingMode.HALF_EVEN);
+        return valorTotal.divide(new BigDecimal(numeroParcelas), RoundingMode.HALF_EVEN);
     }
 
     public void atualizarItemCartao(Parcela parcelaAntiga, Parcela novaParcela) {

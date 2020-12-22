@@ -150,9 +150,9 @@ public class CartaoCreditoService extends AbstractService {
         return cartaoCreditoRepository.save(cartaoCredito);
     }
 
-    private ItemCartao buscarItemNoCartao(Long cardItemId, CartaoCredito cartaoCredito) {
+    private ItemCartao buscarItemNoCartao(Long idItemCartao, CartaoCredito cartaoCredito) {
         return cartaoCredito.getItens().stream()
-                .filter(cartao -> cartao.getIdItemCartao().equals(cardItemId))
+                .filter(cartao -> cartao.getIdItemCartao().equals(idItemCartao))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no cartão de crédito"));
     }

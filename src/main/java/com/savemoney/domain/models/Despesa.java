@@ -49,5 +49,5 @@ public class Despesa implements Serializable {
     private ContaBancaria contaBancaria;
 
     @Transient
-    private TipoTransacao transacao = SAIDA;
+    private TipoTransacao tipoTransacao = SAIDA;
 }

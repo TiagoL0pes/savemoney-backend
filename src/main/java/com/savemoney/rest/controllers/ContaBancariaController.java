@@ -8,6 +8,7 @@ import com.savemoney.domain.requests.ContaBancariaRequest;
 import com.savemoney.domain.requests.TransacaoRequest;
 import com.savemoney.domain.responses.ContaBancariaResponse;
 import com.savemoney.rest.facades.ContaBancariaFacade;
+import com.savemoney.rest.swagger.ContaBancariaSwagger;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/contas/bancarias")
-public class ContaBancariaController extends AbstractController {
+public class ContaBancariaController extends AbstractController implements ContaBancariaSwagger {
 
     @Autowired
     private ContaBancariaFacade contaBancariaFacade;
@@ -52,8 +53,8 @@ public class ContaBancariaController extends AbstractController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable Long idContaBancaria, @RequestBody ContaBancariaRequest request) {
-        contaBancariaFacade.atualizar(idContaBancaria, request);
+    public ResponseEntity<Void> atualizar(@PathVariable Long id, @RequestBody ContaBancariaRequest request) {
+        contaBancariaFacade.atualizar(id, request);
         return ResponseEntity.noContent().build();
     }
 

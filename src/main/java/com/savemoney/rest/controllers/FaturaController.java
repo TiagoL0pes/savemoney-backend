@@ -5,6 +5,7 @@ import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.pagination.FaturasPagination;
 import com.savemoney.domain.requests.FaturaRequest;
 import com.savemoney.rest.facades.FaturaFacade;
+import com.savemoney.rest.swagger.FaturaSwagger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("faturas")
-public class FaturaController extends AbstractController {
+public class FaturaController extends AbstractController implements FaturaSwagger {
 
     @Autowired
     private FaturaFacade faturaFacade;

@@ -2,6 +2,7 @@ package com.savemoney.security.rest.controllers;
 
 import com.savemoney.abstracts.AbstractController;
 import com.savemoney.domain.responses.UsuarioResponse;
+import com.savemoney.rest.swagger.UsuarioSwagger;
 import com.savemoney.security.domain.mappers.UsuarioMapper;
 import com.savemoney.security.domain.models.Usuario;
 import com.savemoney.security.domain.requests.UsuarioRequest;
@@ -16,7 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController extends AbstractController {
+public class UsuarioController extends AbstractController implements UsuarioSwagger {
 
     @Autowired
     private UsuarioService usuarioService;

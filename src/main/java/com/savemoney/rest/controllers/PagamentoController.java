@@ -1,13 +1,14 @@
 package com.savemoney.rest.controllers;
 
 import com.savemoney.rest.facades.PagamentoFacade;
+import com.savemoney.rest.swagger.PagamentoSwagger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pagamentos")
-public class PagamentoController {
+public class PagamentoController implements PagamentoSwagger {
 
     @Autowired
     private PagamentoFacade pagamentoFacade;

@@ -1,6 +1,7 @@
 package com.savemoney.security.rest.controllers;
 
 import com.savemoney.domain.models.ContaBancaria;
+import com.savemoney.rest.swagger.AuthSwagger;
 import com.savemoney.security.domain.models.Usuario;
 import com.savemoney.security.domain.requests.AuthRequest;
 import com.savemoney.security.domain.responses.TokenPayloadResponse;
@@ -25,7 +26,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthSwagger {
 
     @Autowired
     private AuthenticationManager authenticationManager;

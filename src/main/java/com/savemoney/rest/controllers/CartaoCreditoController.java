@@ -9,6 +9,7 @@ import com.savemoney.domain.responses.CartaoCreditoResponse;
 import com.savemoney.domain.responses.ItemCartaoResponse;
 import com.savemoney.domain.responses.ResumoItemCartaoResponse;
 import com.savemoney.rest.facades.CartaoCreditoFacade;
+import com.savemoney.rest.swagger.CartaoCreditoSwagger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +21,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/cartoes/credito")
-public class CartaoCreditoController extends AbstractController {
+public class CartaoCreditoController extends AbstractController implements CartaoCreditoSwagger {
 
     @Autowired
     private CartaoCreditoFacade cartaoCreditoFacade;

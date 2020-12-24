@@ -48,7 +48,7 @@ public class CartaoCredito implements Serializable {
     private List<ItemCartao> itens = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_fatura")
+    @JoinColumn(name = "fk_cartao_credito")
     private List<Fatura> faturas = new ArrayList<>();
 
     public CartaoCredito(Long idCartaoCredito,

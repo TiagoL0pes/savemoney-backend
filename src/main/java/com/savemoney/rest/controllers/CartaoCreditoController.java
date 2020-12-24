@@ -99,7 +99,7 @@ public class CartaoCreditoController extends AbstractController implements Carta
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("itens/{idCartao}")
+    @DeleteMapping("{idCartao}/itens")
     public ResponseEntity<Void> removerItemPorId(@RequestHeader("Authorization") String token,
                                                  @PathVariable Long idCartao) {
         cartaoCreditoFacade.removerItemPorId(token, idCartao);

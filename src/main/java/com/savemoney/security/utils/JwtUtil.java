@@ -64,7 +64,7 @@ public class JwtUtil {
         try {
             return new ObjectMapper().readValue(payload, TokenPayloadResponse.class);
         } catch (JsonProcessingException e) {
-            return TokenPayloadResponse.builder().build();
+            return new TokenPayloadResponse();
         }
     }
 

@@ -26,7 +26,7 @@ public class Fatura implements Serializable {
     private Long idFatura;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_parcela")
+    @JoinColumn(name = "fk_fatura")
     private List<Parcela> parcelas = new ArrayList<>();
 
     @Column(name = "data_vencimento")

@@ -145,6 +145,7 @@ public class CartaoCreditoService extends AbstractService {
         ItemCartaoRequest validatedRequest = validarItemCartao(request, itemAtual);
         ItemCartao itemAtualizado = itemCartaoMapper.toItemCartao(validatedRequest, cartaoCredito.getDiaVencimento());
         itemAtualizado.setIdItemCartao(itemAtual.getIdItemCartao());
+        itemAtualizado.setContaBancaria(contaBancaria);
         cartaoCredito.atualizarItemCartao(itemAtual, itemAtualizado);
 
         return cartaoCreditoRepository.save(cartaoCredito);

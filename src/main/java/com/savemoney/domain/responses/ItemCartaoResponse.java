@@ -1,6 +1,5 @@
 package com.savemoney.domain.responses;
 
-import com.savemoney.domain.models.Parcela;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +26,5 @@ public class ItemCartaoResponse {
 
     private Integer numeroParcelas;
 
-    private List<Parcela> parcelas = new ArrayList<>();
+    private List<ParcelaResponse> parcelas = new ArrayList<>();
 }

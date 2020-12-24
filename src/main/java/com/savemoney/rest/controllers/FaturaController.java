@@ -1,11 +1,14 @@
 package com.savemoney.rest.controllers;
 
 import com.savemoney.abstracts.AbstractController;
+import com.savemoney.domain.mappers.FaturaMapper;
 import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.pagination.FaturasPagination;
 import com.savemoney.domain.requests.FaturaRequest;
+import com.savemoney.domain.responses.FaturaResponse;
 import com.savemoney.rest.facades.FaturaFacade;
 import com.savemoney.rest.swagger.FaturaSwagger;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,9 +41,9 @@ public class FaturaController extends AbstractController implements FaturaSwagge
     }
 
     @GetMapping("{idFatura}")
-    public ResponseEntity<Fatura> buscarPorId(@PathVariable Long idFatura) {
-        Fatura fatura = faturaFacade.buscarPorId(idFatura);
-        return ResponseEntity.ok(fatura);
+    public ResponseEntity<FaturaResponse> buscarPorId(@PathVariable Long idFatura) {
+        FaturaResponse response = faturaFacade.buscarPorId(idFatura);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

@@ -8,6 +8,7 @@ import com.savemoney.rest.commands.PagamentoCommand;
 import com.savemoney.rest.factories.PagamentoCommandFactory;
 import com.savemoney.rest.services.ContaBancariaService;
 import com.savemoney.rest.services.DespesaService;
+import com.savemoney.rest.services.FaturaService;
 import com.savemoney.rest.services.ParcelaService;
 import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.mapstruct.factory.Mappers;
@@ -31,7 +32,7 @@ public class PagamentoFacade {
     private ParcelaService parcelaService;
 
     @Autowired
-    private FaturaFacade faturaFacade;
+    private FaturaService faturaService;
 
     @Autowired
     private PagamentoCommandFactory pagamentoCommandFactory;
@@ -63,7 +64,7 @@ public class PagamentoFacade {
     public void pagarFatura(String token, Long id) {
         ContaBancaria contaBancaria = contaBancariaService.recuperarContaBancaria(token);
         CartaoCredito cartaoCredito = buscarCartaoCredito(contaBancaria);
-        Fatura fatura = faturaFacade.buscarPorId(id);
+        Fatura fatura = faturaService.buscarPorId(id);
         List<Parcela> parcelas = fatura.getParcelas();
 
         Despesa despesa = despesaMapper.toDespesa(fatura);
@@ -80,7 +81,7 @@ public class PagamentoFacade {
         fatura.setParcelas(parcelas);
         fatura.setCartaoCredito(cartaoCredito);
         contaBancariaService.atualizarSaldo(contaBancaria);
-        faturaFacade.atualizarStatus(fatura);
+        faturaService.atualizarStatus(fatura);
     }
 
     private CartaoCredito buscarCartaoCredito(ContaBancaria contaBancaria) {

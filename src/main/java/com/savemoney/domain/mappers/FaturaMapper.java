@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(imports = {DateHelper.class})
-public interface FaturaMapper {
+public interface FaturaMapper extends DefaultMapper {
 
     @Mapping(target = "idFatura", source = "despesa.idDespesa")
     @Mapping(target = "total", source = "despesa.valor")

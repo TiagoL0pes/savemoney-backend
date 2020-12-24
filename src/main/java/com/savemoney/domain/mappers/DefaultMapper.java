@@ -10,7 +10,7 @@ import java.util.Objects;
 public interface DefaultMapper {
 
     default BigDecimal setBigDecimalScale(BigDecimal value) {
-        return Objects.isNull(value) ? new BigDecimal(0).setScale(5, RoundingMode.HALF_EVEN) :
-                value.setScale(5, RoundingMode.HALF_EVEN);
+        return Objects.isNull(value) ? new BigDecimal(0).setScale(2, RoundingMode.HALF_EVEN) :
+                value.setScale(2, RoundingMode.HALF_EVEN);
     }
 }

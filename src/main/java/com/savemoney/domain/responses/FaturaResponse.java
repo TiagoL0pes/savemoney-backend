@@ -18,11 +18,11 @@ public class FaturaResponse {
 
     private Long idFatura;
 
-    private List<Parcela> parcelas;
-
     private String dataVencimento;
 
     private StatusPagamento statusPagamento;
 
     private BigDecimal total;
+
+    private List<ParcelaResponse> parcelas;
 }

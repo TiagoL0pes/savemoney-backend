@@ -1,16 +1,19 @@
 package com.savemoney.rest.facades;
 
 import com.savemoney.domain.enums.StatusPagamento;
+import com.savemoney.domain.mappers.FaturaMapper;
 import com.savemoney.domain.models.CartaoCredito;
 import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.models.Parcela;
 import com.savemoney.domain.pagination.FaturasPagination;
 import com.savemoney.domain.requests.FaturaRequest;
+import com.savemoney.domain.responses.FaturaResponse;
 import com.savemoney.rest.services.CartaoCreditoService;
 import com.savemoney.rest.services.FaturaService;
 import com.savemoney.rest.services.ParcelaService;
 import com.savemoney.utils.exceptions.BadRequestException;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,9 @@ public class FaturaFacade {
     @Autowired
     private ParcelaService parcelaService;
 
+    private final FaturaMapper faturaMapper =
+            Mappers.getMapper(FaturaMapper.class);
+
     public Fatura gerarFatura(FaturaRequest request) {
         CartaoCredito cartaoCredito = cartaoCreditoService.buscarPorId(request.getIdCartao());
         ContaBancaria contaBancaria = cartaoCredito.getContaBancaria();
@@ -52,6 +58,7 @@ public class FaturaFacade {
 
         validarParcelas(parcelasParaGerarFatura);
         Fatura fatura = new Fatura(parcelasParaGerarFatura, StatusPagamento.PENDENTE, dataVencimento);
+        fatura.setCartaoCredito(cartaoCredito);
         fatura = faturaService.gerar(fatura);
 
         cartaoCredito.adicionarFatura(fatura);
@@ -122,8 +129,9 @@ public class FaturaFacade {
                 .get();
     }
 
-    public Fatura buscarPorId(Long idFatura) {
-        return faturaService.buscarPorId(idFatura);
+    public FaturaResponse buscarPorId(Long idFatura) {
+        Fatura fatura = faturaService.buscarPorId(idFatura);
+        return faturaMapper.toFaturaResponse(fatura);
     }
 
     public FaturasPagination listar(Long idCartao, Pageable pageable) {

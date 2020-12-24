@@ -36,12 +36,12 @@ public class ItemCartao implements Serializable {
     @Column(name = "numero_parcelas")
     private Integer numeroParcelas;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "fk_conta_bancaria")
     private ContaBancaria contaBancaria;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "fk_parcela")
+    @JoinColumn(name = "fk_item_cartao")
     private List<Parcela> parcelas = new ArrayList<>();
 
     public ItemCartao(Long idItemCartao,

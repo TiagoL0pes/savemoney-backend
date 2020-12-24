@@ -7,6 +7,7 @@ import com.savemoney.domain.responses.BancoResponse;
 import com.savemoney.rest.repositories.BancoRepository;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class BancoService {
     private final BancoMapper bancoMapper =
             Mappers.getMapper(BancoMapper.class);
 
+    @Cacheable(value = "listarBancos")
     public BancosPagination listar(Pageable pageable) {
         Page<Banco> page = bancoRepository.findAll(pageable);
         List<BancoResponse> bancos = bancoMapper.toBancosResponse(page.getContent());

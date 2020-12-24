@@ -3,6 +3,7 @@ package com.savemoney.rest.swagger;
 import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.pagination.FaturasPagination;
 import com.savemoney.domain.requests.FaturaRequest;
+import com.savemoney.domain.responses.FaturaResponse;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public interface FaturaSwagger {
             @ApiResponse(code = 404, message = "Recurso não encontrado"),
             @ApiResponse(code = 500, message = "Erro interno de servidor"),
     })
-    ResponseEntity<Fatura> buscarPorId(Long id);
+    ResponseEntity<FaturaResponse> buscarPorId(Long id);
 
     @ApiOperation("Buscar lista paginada de despesas")
     @ApiImplicitParams({

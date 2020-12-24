@@ -64,13 +64,13 @@ public class ContaBancariaController extends AbstractController implements Conta
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/deposit/{id}")
+    @PatchMapping("/depositar/{id}")
     public ResponseEntity<Void> depositar(@PathVariable Long id, @RequestBody TransacaoRequest request) {
         contaBancariaFacade.realizarTransacao(id, request);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/withdraw/{id}")
+    @PatchMapping("/sacar/{id}")
     public ResponseEntity<Void> sacar(@PathVariable Long id, @RequestBody TransacaoRequest request) {
         contaBancariaFacade.realizarTransacao(id, request);
         return ResponseEntity.ok().build();

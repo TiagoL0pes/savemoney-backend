@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -31,16 +32,16 @@ public class Usuario implements UserDetails {
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @Column(name = "conta_nao_expirada", columnDefinition = "boolean DEFAULT true")
+    @Column(name = "conta_nao_expirada", columnDefinition = "boolean DEFAULT true", nullable = false)
     private Boolean contaNaoExpirada = true;
 
-    @Column(name = "conta_nao_bloqueada", columnDefinition = "boolean DEFAULT true")
+    @Column(name = "conta_nao_bloqueada", columnDefinition = "boolean DEFAULT true", nullable = false)
     private Boolean contaNaoBloqueada = true;
 
-    @Column(name = "credenciais_nao_expiradas", columnDefinition = "boolean DEFAULT true")
+    @Column(name = "credenciais_nao_expiradas", columnDefinition = "boolean DEFAULT true", nullable = false)
     private Boolean CredenciaisNaoExpiradas = true;
 
-    @Column(name = "habilitado", columnDefinition = "boolean DEFAULT true")
+    @Column(name = "habilitado", columnDefinition = "boolean DEFAULT true", nullable = false)
     private Boolean habilitado = true;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -79,6 +80,11 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
+    }
+
+    public Usuario(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
     }
 
 }

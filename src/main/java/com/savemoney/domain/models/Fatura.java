@@ -43,7 +43,9 @@ public class Fatura implements Serializable {
     @JoinColumn(name = "fk_cartao_credito")
     private CartaoCredito cartaoCredito;
 
-    public Fatura(List<Parcela> parcelas, StatusPagamento statusPagamento, LocalDate dataVencimento) {
+    public Fatura(List<Parcela> parcelas,
+                  StatusPagamento statusPagamento,
+                  LocalDate dataVencimento) {
         this.parcelas = parcelas;
         this.statusPagamento = statusPagamento;
         this.dataVencimento = dataVencimento;

@@ -37,7 +37,7 @@ public class Despesa implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = "valor")
+    @Column(name = "valor", precision = 14, scale = 5)
     private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
@@ -50,4 +50,16 @@ public class Despesa implements Serializable {
 
     @Transient
     private TipoTransacao tipoTransacao = SAIDA;
+
+    public Despesa(LocalDate dataEntrada,
+                   LocalDate dataVencimento,
+                   String descricao,
+                   BigDecimal valor,
+                   StatusPagamento statusPagamento) {
+        this.dataEntrada = dataEntrada;
+        this.dataVencimento = dataVencimento;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.statusPagamento = statusPagamento;
+    }
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -39,7 +38,7 @@ public class Usuario implements UserDetails {
     private Boolean contaNaoBloqueada = true;
 
     @Column(name = "credenciais_nao_expiradas", columnDefinition = "boolean DEFAULT true", nullable = false)
-    private Boolean CredenciaisNaoExpiradas = true;
+    private Boolean credenciaisNaoExpiradas = true;
 
     @Column(name = "habilitado", columnDefinition = "boolean DEFAULT true", nullable = false)
     private Boolean habilitado = true;
@@ -69,7 +68,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.CredenciaisNaoExpiradas;
+        return this.credenciaisNaoExpiradas;
     }
 
     @Override

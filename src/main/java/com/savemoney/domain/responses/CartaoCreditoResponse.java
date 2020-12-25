@@ -19,7 +19,7 @@ public class CartaoCreditoResponse {
 
     private String numero;
 
-    private Integer dataVencimento;
+    private Integer diaVencimento;
 
     private BigDecimal limiteCredito;
 

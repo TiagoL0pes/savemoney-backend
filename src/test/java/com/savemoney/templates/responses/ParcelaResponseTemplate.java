@@ -1,4 +1,4 @@
-package com.savemoney.templates.models;
+package com.savemoney.templates.responses;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
@@ -10,9 +10,9 @@ import com.savemoney.domain.models.Parcela;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class ParcelaTemplate implements TemplateLoader {
+public class ParcelaResponseTemplate implements TemplateLoader {
 
-    public static final String PRIMEIRA = "valido";
+    public static final String PRIMEIRA = "primeira";
     public static final String SEGUNDA = "segunda";
     public static final String TERCEIRA = "terceira";
 

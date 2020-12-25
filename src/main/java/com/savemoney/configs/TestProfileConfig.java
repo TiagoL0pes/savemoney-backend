@@ -109,7 +109,7 @@ public class TestProfileConfig {
             parcelaRepository.saveAll(Arrays.asList(parcela1, parcela2, parcela3));
 
             ItemCartao item = new ItemCartao(1L,
-                    LocalDate.now(),
+                    LocalDate.of(2020, 1, 7),
                     "Tênis",
                     new BigDecimal("150"),
                     3);

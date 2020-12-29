@@ -159,6 +159,7 @@
                         <exclude>**/specifications/**</exclude>
                         <exclude>**/filters/**</exclude>
                         <exclude>**/models/**</exclude>
+                        <exclude>**/security/**</exclude>
                         <exclude>**/pagination/**</exclude>
                         <exclude>**/requests/**</exclude>
                         <exclude>**/responses/**</exclude>
@@ -213,6 +214,7 @@
                                 <exclude>**/specifications/**</exclude>
                                 <exclude>**/filters/**</exclude>
                                 <exclude>**/models/**</exclude>
+                                <exclude>**/security/**</exclude>
                                 <exclude>**/pagination/**</exclude>
                                 <exclude>**/requests/**</exclude>
                                 <exclude>**/responses/**</exclude>

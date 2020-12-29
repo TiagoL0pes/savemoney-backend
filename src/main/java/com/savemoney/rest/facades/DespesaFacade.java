@@ -26,7 +26,8 @@ public class DespesaFacade {
     @Autowired
     private ContaBancariaService contaBancariaService;
 
-    private final DespesaMapper mapper = Mappers.getMapper(DespesaMapper.class);
+    private final DespesaMapper mapper =
+            Mappers.getMapper(DespesaMapper.class);
 
     public Despesa adicionar(String token, DespesaRequest request) {
         ContaBancaria contaBancaria = contaBancariaService.recuperarContaBancaria(token);

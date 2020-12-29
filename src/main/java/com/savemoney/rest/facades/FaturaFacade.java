@@ -138,8 +138,4 @@ public class FaturaFacade {
         cartaoCreditoService.buscarPorId(idCartao);
         return faturaService.listar(idCartao, pageable);
     }
-
-    public void atualizarStatus(Fatura fatura) {
-        faturaService.atualizarStatus(fatura);
-    }
 }

@@ -3,8 +3,7 @@ package com.savemoney.templates.models;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import com.savemoney.domain.models.ContaBancaria;
-import com.savemoney.domain.models.Transacao;
+import com.savemoney.security.domain.models.Usuario;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UsuarioTemplate implements TemplateLoader {
@@ -13,7 +12,7 @@ public class UsuarioTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(Transacao.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(Usuario.class).addTemplate(VALIDO, new Rule() {{
             String senha = new BCryptPasswordEncoder().encode("1234");
 
             add("idUsuario", "1");
@@ -23,8 +22,6 @@ public class UsuarioTemplate implements TemplateLoader {
             add("contaNaoBloqueada", true);
             add("credenciaisNaoExpiradas", true);
             add("habilitado", true);
-            add("contaBancaria", one(ContaBancaria.class,
-                    ContaBancariaTemplate.VALIDO));
         }});
     }
 }

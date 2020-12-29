@@ -22,8 +22,6 @@ public class CartaoCreditoTemplate implements TemplateLoader {
             add("diaVencimento", "10");
             add("limiteCredito", new BigDecimal("2500"));
             add("limiteUtilizado", BigDecimal.ZERO);
-            add("contaBancaria", one(ContaBancaria.class,
-                    ContaBancariaTemplate.VALIDO));
             add("itens", has(1)
                     .of(ItemCartao.class, ItemCartaoTemplate.VALIDO));
             add("faturas", has(1)

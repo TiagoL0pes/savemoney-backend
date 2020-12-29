@@ -4,7 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.savemoney.domain.enums.TipoTransacao;
-import com.savemoney.domain.models.Transacao;
+import com.savemoney.domain.requests.TransacaoRequest;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ public class TransacaoRequestTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(Transacao.class).addTemplate(ENTRADA, new Rule() {{
+        Fixture.of(TransacaoRequest.class).addTemplate(ENTRADA, new Rule() {{
             add("valor", new BigDecimal("100"));
             add("descricao", "Depósito");
             add("tipoTransacao", TipoTransacao.ENTRADA);

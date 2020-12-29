@@ -5,7 +5,7 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.savemoney.domain.enums.Mes;
 import com.savemoney.domain.enums.StatusPagamento;
-import com.savemoney.domain.models.Parcela;
+import com.savemoney.domain.responses.ParcelaResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,7 +18,7 @@ public class ParcelaResponseTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(Parcela.class).addTemplate(PRIMEIRA, new Rule() {{
+        Fixture.of(ParcelaResponse.class).addTemplate(PRIMEIRA, new Rule() {{
             add("idParcela", "1");
             add("numeroParcela", "1");
             add("valor", new BigDecimal("50"));

@@ -4,7 +4,6 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.savemoney.domain.enums.StatusPagamento;
-import com.savemoney.domain.models.CartaoCredito;
 import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.models.Parcela;
 
@@ -22,8 +21,6 @@ public class FaturaTemplate implements TemplateLoader {
             add("dataVencimento", LocalDate.of(2020, 1, 10));
             add("statusPagamento", StatusPagamento.PENDENTE);
             add("total", new BigDecimal("50"));
-            add("cartaoCredito", one(CartaoCredito.class,
-                    CartaoCreditoTemplate.VALIDO));
             add("parcelas", has(3).of(Parcela.class,
                     ParcelaTemplate.PRIMEIRA,
                     ParcelaTemplate.SEGUNDA,

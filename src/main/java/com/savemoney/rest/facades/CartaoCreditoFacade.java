@@ -16,7 +16,6 @@ import com.savemoney.rest.services.ContaBancariaService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -55,10 +54,9 @@ public class CartaoCreditoFacade {
         cartaoCreditoService.atualizar(idCartao, cartaoCredito, contaBancaria);
     }
 
-    public ResponseEntity<Void> remover(String token, Long idCartao) {
+    public void remover(String token, Long idCartao) {
         ContaBancaria contaBancaria = contaBancariaService.recuperarContaBancaria(token);
         cartaoCreditoService.remover(idCartao, contaBancaria);
-        return ResponseEntity.noContent().build();
     }
 
     public ResumoItemCartaoResponse resumoItensCartao(String token, Long idCartao, Integer mes, Integer ano) {

@@ -22,8 +22,6 @@ public class ItemCartaoTemplate implements TemplateLoader {
             add("descricao", "Tênis");
             add("valorTotal", new BigDecimal("150"));
             add("numeroParcelas", "3");
-            add("contaBancaria", one(ContaBancaria.class,
-                    ContaBancariaTemplate.VALIDO));
             add("parcelas", has(3).of(Parcela.class,
                     ParcelaTemplate.PRIMEIRA,
                     ParcelaTemplate.SEGUNDA,

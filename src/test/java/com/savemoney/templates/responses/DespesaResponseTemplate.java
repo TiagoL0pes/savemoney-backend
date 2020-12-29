@@ -5,7 +5,7 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.savemoney.domain.enums.StatusPagamento;
 import com.savemoney.domain.enums.TipoTransacao;
-import com.savemoney.domain.models.Despesa;
+import com.savemoney.domain.responses.DespesaResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class DespesaResponseTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(Despesa.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(DespesaResponse.class).addTemplate(VALIDO, new Rule() {{
             add("idDespesa", "1");
             add("dataEntrada", LocalDate.of(2020, 7, 15));
             add("dataPagamento", null);

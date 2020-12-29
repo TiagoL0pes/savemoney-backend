@@ -3,7 +3,6 @@ package com.savemoney.templates.models;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import com.savemoney.domain.models.Banco;
 import com.savemoney.domain.models.CartaoCredito;
 import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.models.Transacao;
@@ -22,8 +21,6 @@ public class ContaBancariaTemplate implements TemplateLoader {
             add("agencia", "0001");
             add("conta", "123456");
             add("saldo", new BigDecimal("1500"));
-            add("banco", one(Banco.class,
-                    BancoTemplate.VALIDO));
             add("transacoes", has(1)
                     .of(Transacao.class, TransacaoTemplate.ENTRADA));
             add("cartoesCredito", has(1)

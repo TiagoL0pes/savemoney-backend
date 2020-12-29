@@ -26,6 +26,10 @@ public class CartoesCreditoPagination extends PageImpl<CartaoCreditoResponse> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
+    public CartoesCreditoPagination(List<CartaoCreditoResponse> content) {
+        super(content);
+    }
+
     public CartoesCreditoPagination(List<CartaoCreditoResponse> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }

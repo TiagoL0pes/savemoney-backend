@@ -6,6 +6,7 @@ import com.savemoney.domain.models.Transacao;
 import com.savemoney.domain.pagination.ContasBancariasPagination;
 import com.savemoney.domain.requests.ContaBancariaRequest;
 import com.savemoney.domain.requests.TransacaoRequest;
+import com.savemoney.domain.responses.ContaBancariaResponse;
 import com.savemoney.rest.services.ContaBancariaService;
 import com.savemoney.rest.services.TransacaoService;
 import com.savemoney.security.domain.models.Usuario;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -43,13 +45,15 @@ public class ContaBancariaFacade {
         return contaBancariaService.adicionar(contaBancaria);
     }
 
-    public ContaBancaria buscarPorId(Long id) {
-        return contaBancariaService.buscarPorId(id);
+    public ContaBancariaResponse buscarPorId(Long id) {
+        ContaBancaria contaBancaria = contaBancariaService.buscarPorId(id);
+        return contaBancariaMapper.toContaBancariaResponse(contaBancaria);
     }
 
     public ContasBancariasPagination listar(Pageable pageable) {
         Page<ContaBancaria> page = contaBancariaService.listar(pageable);
-        return new ContasBancariasPagination(page.getContent(), page.getPageable(), page.getTotalElements());
+        List<ContaBancariaResponse> response = contaBancariaMapper.toContasBancariasResponse(page.getContent());
+        return new ContasBancariasPagination(response, page.getPageable(), page.getTotalElements());
     }
 
     public ContaBancaria atualizar(Long idContaBancaria, ContaBancariaRequest request) {

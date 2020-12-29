@@ -4,7 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.savemoney.domain.enums.StatusPagamento;
-import com.savemoney.domain.models.Fatura;
+import com.savemoney.domain.responses.FaturaResponse;
 import com.savemoney.domain.responses.ParcelaResponse;
 
 import java.math.BigDecimal;
@@ -16,9 +16,9 @@ public class FaturaResponseTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(Fatura.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(FaturaResponse.class).addTemplate(VALIDO, new Rule() {{
             add("idFatura", "1");
-            add("dataVencimento", LocalDate.of(2020, 1, 10));
+            add("dataVencimento", "10/01/2020");
             add("statusPagamento", StatusPagamento.PENDENTE);
             add("total", new BigDecimal("50"));
             add("parcelas", has(3).of(ParcelaResponse.class,

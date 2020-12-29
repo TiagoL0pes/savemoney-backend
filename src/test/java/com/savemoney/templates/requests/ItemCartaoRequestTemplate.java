@@ -3,7 +3,7 @@ package com.savemoney.templates.requests;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import com.savemoney.domain.models.ItemCartao;
+import com.savemoney.domain.requests.ItemCartaoRequest;
 
 import java.math.BigDecimal;
 
@@ -13,7 +13,7 @@ public class ItemCartaoRequestTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(ItemCartao.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(ItemCartaoRequest.class).addTemplate(VALIDO, new Rule() {{
             add("dataCompra", "07/01/2020");
             add("descricao", "Tênis");
             add("valorTotal", new BigDecimal("150"));

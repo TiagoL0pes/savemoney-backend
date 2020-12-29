@@ -26,6 +26,10 @@ public class FaturasPagination extends PageImpl<FaturaResponse> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
+    public FaturasPagination(List<FaturaResponse> content) {
+        super(content);
+    }
+
     public FaturasPagination(List<FaturaResponse> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }

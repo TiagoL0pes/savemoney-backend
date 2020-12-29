@@ -3,8 +3,8 @@ package com.savemoney.templates.responses;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.responses.BancoResponse;
+import com.savemoney.domain.responses.ContaBancariaResponse;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,7 @@ public class ContaBancariaResponseTemplate implements TemplateLoader {
 
     @Override
     public void load() {
-        Fixture.of(ContaBancaria.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(ContaBancariaResponse.class).addTemplate(VALIDO, new Rule() {{
             add("idContaBancaria", "1");
             add("agencia", "0001");
             add("conta", "123456");

@@ -1,7 +1,6 @@
 package com.savemoney.rest.controllers;
 
 import com.savemoney.abstracts.AbstractController;
-import com.savemoney.domain.mappers.ContaBancariaMapper;
 import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.pagination.ContasBancariasPagination;
 import com.savemoney.domain.requests.ContaBancariaRequest;
@@ -9,7 +8,6 @@ import com.savemoney.domain.requests.TransacaoRequest;
 import com.savemoney.domain.responses.ContaBancariaResponse;
 import com.savemoney.rest.facades.ContaBancariaFacade;
 import com.savemoney.rest.swagger.ContaBancariaSwagger;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,9 +25,6 @@ public class ContaBancariaController extends AbstractController implements Conta
     @Autowired
     private ContaBancariaFacade contaBancariaFacade;
 
-    private final ContaBancariaMapper contaBancariaMapper =
-            Mappers.getMapper(ContaBancariaMapper.class);
-
     @PostMapping
     public ResponseEntity<Void> adicionar(@Valid @RequestBody ContaBancariaRequest request) {
         ContaBancaria contaBancaria = contaBancariaFacade.adicionar(request);
@@ -41,8 +36,8 @@ public class ContaBancariaController extends AbstractController implements Conta
 
     @GetMapping("{id}")
     public ResponseEntity<ContaBancariaResponse> buscarPorId(@PathVariable Long id) {
-        ContaBancaria contaBancaria = contaBancariaFacade.buscarPorId(id);
-        return ResponseEntity.ok(contaBancariaMapper.toContaBancariaResponse(contaBancaria));
+        ContaBancariaResponse response = contaBancariaFacade.buscarPorId(id);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping

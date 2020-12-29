@@ -26,6 +26,10 @@ public class DespesasPagination extends PageImpl<DespesaResponse> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
+    public DespesasPagination(List<DespesaResponse> content) {
+        super(content);
+    }
+
     public DespesasPagination(List<DespesaResponse> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }

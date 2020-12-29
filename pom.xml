@@ -155,6 +155,7 @@
                         <exclude>**/exceptions/**</exclude>
                         <exclude>**/handlers/**</exclude>
                         <exclude>**/configs/**</exclude>
+                        <exclude>**/repositories/**</exclude>
                         <exclude>**/specifications/**</exclude>
                         <exclude>**/filters/**</exclude>
                         <exclude>**/models/**</exclude>
@@ -208,6 +209,7 @@
                                 <exclude>**/exceptions/**</exclude>
                                 <exclude>**/handlers/**</exclude>
                                 <exclude>**/configs/**</exclude>
+                                <exclude>**/repositories/**</exclude>
                                 <exclude>**/specifications/**</exclude>
                                 <exclude>**/filters/**</exclude>
                                 <exclude>**/models/**</exclude>

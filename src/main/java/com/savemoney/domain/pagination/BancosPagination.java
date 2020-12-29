@@ -26,6 +26,10 @@ public class BancosPagination extends PageImpl<BancoResponse> {
         super(content, PageRequest.of(number, size), totalElements);
     }
 
+    public BancosPagination(List<BancoResponse> content) {
+        super(content);
+    }
+
     public BancosPagination(List<BancoResponse> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }

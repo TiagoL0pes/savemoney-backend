@@ -2,7 +2,6 @@ package com.savemoney.rest.services;
 
 import com.savemoney.abstracts.AbstractService;
 import com.savemoney.domain.models.ContaBancaria;
-import com.savemoney.domain.pagination.ContasBancariasPagination;
 import com.savemoney.domain.requests.ContaBancariaRequest;
 import com.savemoney.rest.repositories.BancoRepository;
 import com.savemoney.rest.repositories.ContaBancariaRepository;
@@ -37,9 +36,8 @@ public class ContaBancariaService extends AbstractService {
                 .orElseThrow(() -> new ResourceNotFoundException("Conta bancária não encontrada"));
     }
 
-    public ContasBancariasPagination listar(Pageable pageable) {
-        Page<ContaBancaria> page = contaBancariaRepository.findAll(pageable);
-        return new ContasBancariasPagination(page.getContent(), page.getPageable(), page.getTotalElements());
+    public Page<ContaBancaria> listar(Pageable pageable) {
+        return contaBancariaRepository.findAll(pageable);
     }
 
     public ContaBancaria atualizar(Long id, ContaBancariaRequest request) {

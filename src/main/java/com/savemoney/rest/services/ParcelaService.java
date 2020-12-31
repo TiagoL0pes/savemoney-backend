@@ -25,9 +25,9 @@ public class ParcelaService {
         parcelaRepository.save(parcela);
     }
 
-    public List<Parcela> buscarParcelasParaGerarFatura(LocalDate dueDate, ContaBancaria contaBancaria) {
-        Integer mes = dueDate.getMonthValue();
-        Integer ano = dueDate.getYear();
+    public List<Parcela> buscarParcelasParaGerarFatura(LocalDate dataVencimento, ContaBancaria contaBancaria) {
+        Integer mes = dataVencimento.getMonthValue();
+        Integer ano = dataVencimento.getYear();
         return parcelaRepository.buscarParcelasParaGerarFatura(mes, ano, contaBancaria);
     }
 }

@@ -61,11 +61,6 @@ public class CartaoCreditoService extends AbstractService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cartão de crédito não encontrado"));
     }
 
-    public CartaoCredito buscarPorNumeroCartao(String numero) {
-        return cartaoCreditoRepository.findByNumero(numero)
-                .orElseThrow(() -> new ResourceNotFoundException("Cartão de crédito não encontrado"));
-    }
-
     public CartoesCreditoPagination listar(Pageable pageable, ContaBancaria contaBancaria) {
         Page<CartaoCredito> page = cartaoCreditoRepository.findAllByContaBancaria(pageable, contaBancaria);
         List<CartaoCreditoResponse> content = cartaoCreditoMapper.toCartoesCreditoResponse(page.getContent());

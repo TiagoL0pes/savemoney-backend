@@ -38,8 +38,8 @@ public interface ItemCartaoMapper extends DefaultMapper {
     }
 
     @Named("ajustarDataVencimento")
-    default LocalDate ajustarDataVencimento(LocalDate dueDate) {
-        return dueDate.plusMonths(1);
+    default LocalDate ajustarDataVencimento(LocalDate dataVencimento) {
+        return dataVencimento.plusMonths(1);
     }
 
     default Parcela gerarParcela(ItemCartao itemCartao, Integer indice, LocalDate dataVencimento) {

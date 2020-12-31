@@ -5,6 +5,7 @@ import com.savemoney.domain.models.Fatura;
 import com.savemoney.domain.pagination.FaturasPagination;
 import com.savemoney.domain.responses.FaturaResponse;
 import com.savemoney.rest.repositories.FaturaRepository;
+import com.savemoney.utils.exceptions.BadRequestException;
 import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class FaturaService {
 
     }
 
-    public void buscarPorDataVencimento(LocalDate dueDate) {
-        Integer mes = dueDate.getMonthValue();
-        Integer ano = dueDate.getYear();
+    public void buscarPorDataVencimento(LocalDate dataVencimento) {
+        Integer mes = dataVencimento.getMonthValue();
+        Integer ano = dataVencimento.getYear();
         if (faturaRepository.buscarPorDataVencimento(mes, ano).isPresent()) {
-            throw new ResourceNotFoundException("Fatura para este mês já foi gerada");
+            throw new BadRequestException("Fatura para este mês já foi gerada");
         }
     }
 

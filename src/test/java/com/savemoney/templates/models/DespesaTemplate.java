@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class DespesaTemplate implements TemplateLoader {
 
     public static final String PENDENTE = "pendente";
-    public static final String PAGO = "pendente";
+    public static final String PAGO = "pago";
 
     @Override
     public void load() {

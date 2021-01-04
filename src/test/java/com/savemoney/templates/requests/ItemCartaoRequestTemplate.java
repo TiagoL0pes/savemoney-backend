@@ -16,7 +16,7 @@ public class ItemCartaoRequestTemplate implements TemplateLoader {
         Fixture.of(ItemCartaoRequest.class).addTemplate(VALIDO, new Rule() {{
             add("dataCompra", "07/01/2020");
             add("descricao", "Tênis");
-            add("valorTotal", new BigDecimal("150"));
+            add("valorTotal", new BigDecimal("150.00"));
             add("numeroParcelas", "3");
         }});
     }

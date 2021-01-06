@@ -20,7 +20,7 @@ public interface ContaBancariaSwagger {
             @ApiResponse(code = 404, message = "Recurso não encontrado"),
             @ApiResponse(code = 500, message = "Erro interno de servidor"),
     })
-    ResponseEntity<Void> adicionar(ContaBancariaRequest request);
+    ResponseEntity<Void> adicionar(@ApiIgnore String token, ContaBancariaRequest request);
 
     @ApiOperation("Buscar conta bancária por id")
     @ApiResponses(value = {

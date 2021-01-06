@@ -14,6 +14,7 @@ public class CartaoCreditoTemplate implements TemplateLoader {
 
     public static final String VALIDO = "valido";
     public static final String COM_CONTA_BANCARIA = "com_conta_bancaria";
+    public static final String SEM_PARCELAS = "sem_parcelas";
 
     @Override
     public void load() {
@@ -26,7 +27,7 @@ public class CartaoCreditoTemplate implements TemplateLoader {
             add("itens", has(1)
                     .of(ItemCartao.class, ItemCartaoTemplate.VALIDO));
             add("faturas", has(1)
-                    .of(Fatura.class, FaturaTemplate.VALIDO));
+                    .of(Fatura.class, FaturaTemplate.PENDENTE));
         }}).addTemplate(COM_CONTA_BANCARIA, new Rule() {{
             add("idCartaoCredito", "1");
             add("numero", "1234567812345678");
@@ -38,8 +39,17 @@ public class CartaoCreditoTemplate implements TemplateLoader {
             add("itens", has(1)
                     .of(ItemCartao.class, ItemCartaoTemplate.VALIDO));
             add("faturas", has(1)
-                    .of(Fatura.class, FaturaTemplate.VALIDO));
+                    .of(Fatura.class, FaturaTemplate.PENDENTE));
+        }}).addTemplate(SEM_PARCELAS, new Rule() {{
+            add("idCartaoCredito", "1");
+            add("numero", "1234567812345678");
+            add("diaVencimento", "10");
+            add("limiteCredito", new BigDecimal("2500"));
+            add("limiteUtilizado", BigDecimal.ZERO);
+            add("itens", has(1)
+                    .of(ItemCartao.class, ItemCartaoTemplate.SEM_PARCELAS));
+            add("faturas", has(1)
+                    .of(Fatura.class, FaturaTemplate.PENDENTE));
         }});
-        ;
     }
 }

@@ -12,14 +12,24 @@ import java.time.LocalDate;
 
 public class FaturaTemplate implements TemplateLoader {
 
-    public static final String VALIDO = "valido";
+    public static final String PENDENTE = "pendente";
+    public static final String PAGO = "pago";
 
     @Override
     public void load() {
-        Fixture.of(Fatura.class).addTemplate(VALIDO, new Rule() {{
+        Fixture.of(Fatura.class).addTemplate(PENDENTE, new Rule() {{
             add("idFatura", "1");
             add("dataVencimento", LocalDate.of(2020, 1, 10));
             add("statusPagamento", StatusPagamento.PENDENTE);
+            add("total", new BigDecimal("50"));
+            add("parcelas", has(3).of(Parcela.class,
+                    ParcelaTemplate.PRIMEIRA,
+                    ParcelaTemplate.SEGUNDA,
+                    ParcelaTemplate.TERCEIRA));
+        }}).addTemplate(PAGO, new Rule() {{
+            add("idFatura", "1");
+            add("dataVencimento", LocalDate.of(2020, 1, 10));
+            add("statusPagamento", StatusPagamento.PAGO);
             add("total", new BigDecimal("50"));
             add("parcelas", has(3).of(Parcela.class,
                     ParcelaTemplate.PRIMEIRA,

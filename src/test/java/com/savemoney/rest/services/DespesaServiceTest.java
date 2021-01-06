@@ -9,6 +9,7 @@ import com.savemoney.rest.repositories.DespesaRepository;
 import com.savemoney.templates.models.ContaBancariaTemplate;
 import com.savemoney.templates.models.DespesaTemplate;
 import com.savemoney.templates.requests.DespesaRequestTemplate;
+import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import com.savemoney.utils.exceptions.TransactionNotAllowedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +78,17 @@ public class DespesaServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoQuandoDespesaNaoEncontrada() {
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idDespesa = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            despesaService.buscarPorId(idDespesa, contaBancaria);
+        });
+    }
+
+    @Test
     public void deveListarDespesas() {
         List<Despesa> despesas = Fixture.from(Despesa.class)
                 .gimme(1, DespesaTemplate.PENDENTE);
@@ -94,7 +107,7 @@ public class DespesaServiceTest {
     }
 
     @Test
-    public void devAtualizarStatusDespesa() {
+    public void deveAtualizarStatusDespesa() {
         Despesa despesa = Fixture.from(Despesa.class)
                 .gimme(DespesaTemplate.PENDENTE);
 
@@ -102,6 +115,21 @@ public class DespesaServiceTest {
                 .thenReturn(despesa);
 
         despesaService.atualizarStatus(despesa);
+    }
+
+    @Test
+    public void deveValidarAtualizacaoDespesaRequestBranco() {
+        Despesa despesa = Fixture.from(Despesa.class)
+                .gimme(DespesaTemplate.PENDENTE);
+        DespesaRequest request = new DespesaRequest();
+        request.setValor(BigDecimal.ZERO);
+
+        Mockito.when(despesaRepository.save(any(Despesa.class)))
+                .thenReturn(despesa);
+
+        Despesa despesaAtualizada = despesaService.atualizar(despesa, request);
+
+        assertNotNull(despesaAtualizada);
     }
 
     @Test

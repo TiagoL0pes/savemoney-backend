@@ -1,9 +1,7 @@
 package com.savemoney.rest.services;
 
 import br.com.six2six.fixturefactory.Fixture;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.savemoney.domain.models.ContaBancaria;
-import com.savemoney.domain.pagination.ContasBancariasPagination;
 import com.savemoney.domain.requests.ContaBancariaRequest;
 import com.savemoney.rest.repositories.BancoRepository;
 import com.savemoney.rest.repositories.ContaBancariaRepository;
@@ -12,6 +10,7 @@ import com.savemoney.security.utils.JSONUtil;
 import com.savemoney.security.utils.JwtUtil;
 import com.savemoney.templates.models.ContaBancariaTemplate;
 import com.savemoney.templates.requests.ContaBancariaRequestTemplate;
+import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +28,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ContaBancariaServiceTest {
@@ -43,11 +40,15 @@ public class ContaBancariaServiceTest {
     @Mock
     private BancoRepository bancoRepository;
 
-    private JwtUtil jwtUtil;
-    private JSONUtil jsonUtil;
+    @Mock
+    private JwtUtil jwtMock;
 
     @InjectMocks
     private ContaBancariaService contaBancariaService;
+
+    private JwtUtil jwtUtil;
+    private JSONUtil jsonUtil;
+    private String token;
 
     @BeforeEach
     public void setup() {
@@ -56,6 +57,7 @@ public class ContaBancariaServiceTest {
         jsonUtil = new JSONUtil();
         ReflectionTestUtils.setField(jwtUtil, "secret", "8f447cd98e8dd5b908b53d4e4936d4c9", String.class);
         ReflectionTestUtils.setField(jwtUtil, "expiration", 86400000L, Long.class);
+        token = "";
     }
 
     @Test
@@ -87,6 +89,15 @@ public class ContaBancariaServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoQuandoBancoNaoExiste() {
+        final Long idContaBancaria = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            contaBancariaService.buscarPorId(idContaBancaria);
+        });
+    }
+
+    @Test
     public void deveListarContasBancarias() {
         List<ContaBancaria> contasBancarias = Fixture.from(ContaBancaria.class)
                 .gimme(1, ContaBancariaTemplate.VALIDO);
@@ -104,7 +115,7 @@ public class ContaBancariaServiceTest {
     }
 
     @Test
-    public void devAtualizarContaBancaria() {
+    public void deveAtualizarContaBancaria() {
         ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
                 .gimme(ContaBancariaTemplate.VALIDO);
         ContaBancariaRequest request = Fixture.from(ContaBancariaRequest.class)
@@ -149,10 +160,16 @@ public class ContaBancariaServiceTest {
         ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
                 .gimme(ContaBancariaTemplate.VALIDO);
         final String token = gerarTokenValido(contaBancaria);
-
         TokenPayloadResponse payload = jwtUtil.getPayloadFromToken(token);
 
-        assertNotNull(payload);
+        Mockito.when(jwtMock.getPayloadFromToken(anyString()))
+                .thenReturn(payload);
+        Mockito.when(contaBancariaRepository.findById(anyLong()))
+                .thenReturn(Optional.of(contaBancaria));
+
+        ContaBancaria contaBancariaRecuperada = contaBancariaService.recuperarContaBancaria(token);
+
+        assertNotNull(contaBancariaRecuperada);
     }
 
     private String gerarTokenValido(ContaBancaria contaBancaria) {

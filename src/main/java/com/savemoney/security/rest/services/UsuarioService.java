@@ -8,7 +8,9 @@ import com.savemoney.rest.repositories.ContaBancariaRepository;
 import com.savemoney.security.domain.mappers.UsuarioMapper;
 import com.savemoney.security.domain.models.Usuario;
 import com.savemoney.security.domain.requests.UsuarioRequest;
+import com.savemoney.security.domain.responses.TokenPayloadResponse;
 import com.savemoney.security.rest.repositories.UsuarioRepository;
+import com.savemoney.security.utils.JwtUtil;
 import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class UsuarioService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private final UsuarioMapper usuarioMapper = Mappers.getMapper(UsuarioMapper.class);
 
@@ -59,5 +64,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
+    }
+
+    public Usuario recuperarUsuario(String token) {
+        TokenPayloadResponse payload = jwtUtil.getPayloadFromToken(token);
+        return buscarPorId(payload.getIdUsuario());
     }
 }

@@ -15,6 +15,8 @@ import com.savemoney.templates.models.CartaoCreditoTemplate;
 import com.savemoney.templates.models.ContaBancariaTemplate;
 import com.savemoney.templates.models.ItemCartaoTemplate;
 import com.savemoney.templates.requests.ItemCartaoRequestTemplate;
+import com.savemoney.utils.exceptions.BadRequestException;
+import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,6 +85,15 @@ public class CartaoCreditoServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoQuandoCartaoNaoExisteBuscaPorId() {
+        final Long idCartaoCredito = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.buscarPorId(idCartaoCredito);
+        });
+    }
+
+    @Test
     public void deveBuscarCartaoCreditoPorIdEContaBancaria() {
         CartaoCredito cartaoCreditoEsperado = Fixture.from(CartaoCredito.class)
                 .gimme(CartaoCreditoTemplate.VALIDO);
@@ -98,6 +108,18 @@ public class CartaoCreditoServiceTest {
 
         assertNotNull(cartaoCredito);
         assertEquals(cartaoCreditoEsperado, cartaoCredito);
+    }
+
+    @Test
+    public void deveLancarExcecaoQuandoCartaoNaoExisteBuscaPorIdEContaBancaria() {
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idCartaoCredito = 1L;
+
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.buscarPorId(idCartaoCredito, contaBancaria);
+        });
     }
 
     @Test
@@ -142,6 +164,22 @@ public class CartaoCreditoServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoAoTentarAdicionarCartaoJaCadastrado() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.VALIDO);
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idCartao = 2L;
+
+        Mockito.when(cartaoCreditoRepository.findByNumero(anyString()))
+                .thenReturn(Optional.of(cartaoCredito));
+
+        assertThrows(BadRequestException.class, () -> {
+            cartaoCreditoService.atualizar(idCartao, cartaoCredito, contaBancaria);
+        });
+    }
+
+    @Test
     public void deveRemoverCartaoCredito() {
         CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
                 .gimme(CartaoCreditoTemplate.VALIDO);
@@ -162,8 +200,28 @@ public class CartaoCreditoServiceTest {
         ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
                 .gimme(ContaBancariaTemplate.VALIDO);
         final Long idCartao = 1L;
-        final Integer mes = 12;
+        final Integer mes = 01;
         final Integer ano = 2020;
+
+        FiltroPaginacao filtro = new FiltroPaginacao(mes, ano);
+        Mockito.when(cartaoCreditoRepository.findByIdCartaoCreditoAndContaBancaria(anyLong(), any(ContaBancaria.class)))
+                .thenReturn(Optional.of(cartaoCredito));
+
+        ResumoItemCartaoResponse resumoItemCartaoResponse =
+                cartaoCreditoService.resumoItensCartao(idCartao, filtro, contaBancaria);
+
+        assertNotNull(resumoItemCartaoResponse);
+    }
+
+    @Test
+    public void deveValidarParcelasComFiltroAnoErrado() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.VALIDO);
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idCartao = 1L;
+        final Integer mes = 02;
+        final Integer ano = 2021;
 
         FiltroPaginacao filtro = new FiltroPaginacao(mes, ano);
         Mockito.when(cartaoCreditoRepository.findByIdCartaoCreditoAndContaBancaria(anyLong(), any(ContaBancaria.class)))
@@ -192,6 +250,19 @@ public class CartaoCreditoServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoQuandoCartaoCreditoNaoExisteAoAdicionarItem() {
+        ItemCartaoRequest request = Fixture.from(ItemCartaoRequest.class)
+                .gimme(ItemCartaoRequestTemplate.VALIDO);
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idCartao = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.adicionarItem(idCartao, request, contaBancaria);
+        });
+    }
+
+    @Test
     public void deveBuscarItemCartaoCreditoPorId() {
         ItemCartao itemEsperado = Fixture.from(ItemCartao.class)
                 .gimme(ItemCartaoTemplate.VALIDO);
@@ -206,6 +277,17 @@ public class CartaoCreditoServiceTest {
 
         assertNotNull(itemCartao);
         assertEquals(itemEsperado, itemCartao);
+    }
+
+    @Test
+    public void deveLancarExcecaoQuandoItemNaoExisteNaBuscaPorId() {
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idItem = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.buscarItemPorId(idItem, contaBancaria);
+        });
     }
 
     @Test
@@ -231,6 +313,25 @@ public class CartaoCreditoServiceTest {
     }
 
     @Test
+    public void deveLancarExcecaoAoTentarAtualizarItemNaoExistente() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.VALIDO);
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        ItemCartaoRequest request = Fixture.from(ItemCartaoRequest.class)
+                .gimme(ItemCartaoRequestTemplate.VALIDO);
+        final Long idCartao = 1L;
+        final Long idItem = 2L;
+
+        Mockito.when(cartaoCreditoRepository.findByIdCartaoCreditoAndContaBancaria(anyLong(), any(ContaBancaria.class)))
+                .thenReturn(Optional.of(cartaoCredito));
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.atualizarItem(idCartao, idItem, request, contaBancaria);
+        });
+    }
+
+    @Test
     public void deveRemoverItemCartaoCreditoPorId() {
         ItemCartao item = Fixture.from(ItemCartao.class)
                 .gimme(ItemCartaoTemplate.VALIDO);
@@ -242,6 +343,17 @@ public class CartaoCreditoServiceTest {
                 .thenReturn(Optional.of(item));
 
         cartaoCreditoService.removerItemPorId(idItem, contaBancaria);
+    }
+
+    @Test
+    public void deveLancarExcecaoQuandoItemNaoExiste() {
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        final Long idItem = 1L;
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            cartaoCreditoService.removerItemPorId(idItem, contaBancaria);
+        });
     }
 
 }

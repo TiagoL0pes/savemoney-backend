@@ -49,6 +49,7 @@ public class AuthController implements AuthSwagger {
 
             ContaBancaria contaBancaria = usuario.getContaBancaria();
             TokenPayloadResponse tokenPayload = TokenPayloadResponse.builder()
+                    .idUsuario(usuario.getIdUsuario())
                     .idContaBancaria(contaBancaria.getIdContaBancaria())
                     .email(authentication.getName())
                     .agencia(contaBancaria.getAgencia())

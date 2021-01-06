@@ -1,6 +1,7 @@
 package com.savemoney.rest.facades;
 
 import br.com.six2six.fixturefactory.Fixture;
+import com.savemoney.domain.enums.StatusPagamento;
 import com.savemoney.domain.models.CartaoCredito;
 import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.models.Fatura;
@@ -16,6 +17,7 @@ import com.savemoney.templates.models.FaturaTemplate;
 import com.savemoney.templates.models.ParcelaTemplate;
 import com.savemoney.templates.requests.FaturaRequestTemplate;
 import com.savemoney.templates.responses.FaturaResponseTemplate;
+import com.savemoney.utils.exceptions.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 
@@ -55,7 +58,7 @@ public class FaturaFacadeTest {
     }
 
     @Test
-    public void deveGerarFatura() {
+    public void deveGerarFaturaComMesEAno() {
         CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
                 .gimme(CartaoCreditoTemplate.COM_CONTA_BANCARIA);
         List<Parcela> parcelas = Fixture.from(Parcela.class)
@@ -64,9 +67,63 @@ public class FaturaFacadeTest {
                         ParcelaTemplate.SEGUNDA,
                         ParcelaTemplate.TERCEIRA);
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         FaturaRequest request = Fixture.from(FaturaRequest.class)
                 .gimme(FaturaRequestTemplate.VALIDO);
+
+        Mockito.when(cartaoCreditoService.buscarPorId(anyLong())).thenReturn(cartaoCredito);
+        Mockito.when(parcelaService.buscarParcelasParaGerarFatura(any(LocalDate.class), any(ContaBancaria.class)))
+                .thenReturn(parcelas);
+        Mockito.when(faturaService.gerar(any(Fatura.class))).thenReturn(fatura);
+        Mockito.when(cartaoCreditoService.atualizar(anyLong(), any(CartaoCredito.class), any(ContaBancaria.class)))
+                .thenReturn(cartaoCredito);
+
+        Fatura faturaGerada = faturaFacade.gerarFatura(request);
+
+        assertNotNull(faturaGerada);
+    }
+
+    @Test
+    public void deveGerarFaturaSemMesEAno() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.COM_CONTA_BANCARIA);
+        List<Parcela> parcelas = Fixture.from(Parcela.class)
+                .gimme(3,
+                        ParcelaTemplate.PRIMEIRA,
+                        ParcelaTemplate.SEGUNDA,
+                        ParcelaTemplate.TERCEIRA);
+        Fatura fatura = Fixture.from(Fatura.class)
+                .gimme(FaturaTemplate.PENDENTE);
+        FaturaRequest request = Fixture.from(FaturaRequest.class)
+                .gimme(FaturaRequestTemplate.SEM_MES_ANO);
+
+        Mockito.when(cartaoCreditoService.buscarPorId(anyLong())).thenReturn(cartaoCredito);
+        Mockito.when(parcelaService.buscarParcelasParaGerarFatura(any(LocalDate.class), any(ContaBancaria.class)))
+                .thenReturn(parcelas);
+        Mockito.when(faturaService.gerar(any(Fatura.class))).thenReturn(fatura);
+        Mockito.when(cartaoCreditoService.atualizar(anyLong(), any(CartaoCredito.class), any(ContaBancaria.class)))
+                .thenReturn(cartaoCredito);
+
+        Fatura faturaGerada = faturaFacade.gerarFatura(request);
+
+        assertNotNull(faturaGerada);
+    }
+
+    @Test
+    public void deveGerarFaturaForaDataFechamento() {
+        int diaForaDataFechamento = LocalDate.now().getDayOfMonth() + 12;
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.COM_CONTA_BANCARIA);
+        cartaoCredito.setDiaVencimento(diaForaDataFechamento);
+        List<Parcela> parcelas = Fixture.from(Parcela.class)
+                .gimme(3,
+                        ParcelaTemplate.PRIMEIRA,
+                        ParcelaTemplate.SEGUNDA,
+                        ParcelaTemplate.TERCEIRA);
+        Fatura fatura = Fixture.from(Fatura.class)
+                .gimme(FaturaTemplate.PENDENTE);
+        FaturaRequest request = Fixture.from(FaturaRequest.class)
+                .gimme(FaturaRequestTemplate.COM_MES);
 
         Mockito.when(cartaoCreditoService.buscarPorId(anyLong())).thenReturn(cartaoCredito);
         Mockito.when(parcelaService.buscarParcelasParaGerarFatura(any(LocalDate.class), any(ContaBancaria.class)))
@@ -90,7 +147,7 @@ public class FaturaFacadeTest {
                         ParcelaTemplate.SEGUNDA,
                         ParcelaTemplate.TERCEIRA);
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         FaturaRequest request = Fixture.from(FaturaRequest.class)
                 .gimme(FaturaRequestTemplate.VALIDO);
         final Long idFatura = 1L;
@@ -103,11 +160,72 @@ public class FaturaFacadeTest {
         faturaFacade.atualizarFatura(idFatura, request);
     }
 
+    @Test
+    public void deveLancarExcecaoAoTentarAtualizarFaturaPaga() {
+        Fatura fatura = Fixture.from(Fatura.class)
+                .gimme(FaturaTemplate.PAGO);
+        FaturaRequest request = Fixture.from(FaturaRequest.class)
+                .gimme(FaturaRequestTemplate.VALIDO);
+        final Long idFatura = 1L;
+
+        Mockito.when(faturaService.buscarPorId(anyLong())).thenReturn(fatura);
+
+        assertThrows(BadRequestException.class, () -> {
+            faturaFacade.atualizarFatura(idFatura, request);
+        });
+    }
+
+    @Test
+    public void deveLancarExcecaoAoTentarAtualizarFaturaQuandoNaoExistemParcelas() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.COM_CONTA_BANCARIA);
+        Fatura fatura = Fixture.from(Fatura.class)
+                .gimme(FaturaTemplate.PENDENTE);
+        FaturaRequest request = Fixture.from(FaturaRequest.class)
+                .gimme(FaturaRequestTemplate.VALIDO);
+        final Long idFatura = 1L;
+
+        Mockito.when(faturaService.buscarPorId(anyLong())).thenReturn(fatura);
+        Mockito.when(cartaoCreditoService.buscarPorId(anyLong())).thenReturn(cartaoCredito);
+
+        assertThrows(BadRequestException.class, () -> {
+            faturaFacade.atualizarFatura(idFatura, request);
+        });
+    }
+
+    @Test
+    public void deveLancarExcecaoAoTentarAtualizarFaturaSemNovasParcelasPendentes() {
+        CartaoCredito cartaoCredito = Fixture.from(CartaoCredito.class)
+                .gimme(CartaoCreditoTemplate.COM_CONTA_BANCARIA);
+        List<Parcela> parcelas = Fixture.from(Parcela.class)
+                .gimme(3,
+                        ParcelaTemplate.PRIMEIRA,
+                        ParcelaTemplate.SEGUNDA,
+                        ParcelaTemplate.TERCEIRA);
+        parcelas.get(0).setStatusPagamento(StatusPagamento.PAGO);
+        parcelas.get(1).setStatusPagamento(StatusPagamento.PAGO);
+        parcelas.get(2).setStatusPagamento(StatusPagamento.PAGO);
+        Fatura fatura = Fixture.from(Fatura.class)
+                .gimme(FaturaTemplate.PENDENTE);
+        FaturaRequest request = Fixture.from(FaturaRequest.class)
+                .gimme(FaturaRequestTemplate.VALIDO);
+        final Long idFatura = 1L;
+
+        Mockito.when(faturaService.buscarPorId(anyLong())).thenReturn(fatura);
+        Mockito.when(cartaoCreditoService.buscarPorId(anyLong())).thenReturn(cartaoCredito);
+        Mockito.when(parcelaService.buscarParcelasParaGerarFatura(any(LocalDate.class), any(ContaBancaria.class)))
+                .thenReturn(parcelas);
+
+        assertThrows(BadRequestException.class, () -> {
+            faturaFacade.atualizarFatura(idFatura, request);
+        });
+    }
+
 
     @Test
     public void deveBuscarFaturaPorId() {
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         final Long idFatura = 1L;
 
         Mockito.when(faturaService.buscarPorId(anyLong())).thenReturn(fatura);

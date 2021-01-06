@@ -54,7 +54,7 @@ public class DespesaMapperTest {
     @Test
     public void faturaToDespesa() {
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
 
         Despesa despesa = mapper.toDespesa(fatura);
 

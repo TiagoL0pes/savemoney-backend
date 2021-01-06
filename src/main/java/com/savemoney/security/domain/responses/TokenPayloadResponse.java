@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenPayloadResponse {
+    private Long idUsuario;
     private Long idContaBancaria;
     private String email;
     private String agencia;

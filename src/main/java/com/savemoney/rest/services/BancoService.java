@@ -5,6 +5,8 @@ import com.savemoney.domain.models.Banco;
 import com.savemoney.domain.pagination.BancosPagination;
 import com.savemoney.domain.responses.BancoResponse;
 import com.savemoney.rest.repositories.BancoRepository;
+import com.savemoney.security.domain.models.Usuario;
+import com.savemoney.utils.exceptions.ResourceNotFoundException;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,5 +28,11 @@ public class BancoService {
         Page<Banco> page = bancoRepository.findAll(pageable);
         List<BancoResponse> bancos = bancoMapper.toBancosResponse(page.getContent());
         return new BancosPagination(bancos, page.getPageable(), page.getTotalElements());
+    }
+
+    public Banco buscarPorId(Long idBanco) {
+        return bancoRepository.findById(idBanco)
+                .orElseThrow(() -> new ResourceNotFoundException("Banco não encontrado"));
+
     }
 }

@@ -9,6 +9,8 @@ import com.savemoney.domain.requests.CartaoCreditoRequest;
 import com.savemoney.domain.requests.ItemCartaoRequest;
 import com.savemoney.domain.responses.CartaoCreditoResponse;
 import com.savemoney.domain.responses.ItemCartaoResponse;
+import com.savemoney.domain.responses.ResumoItemCartaoResponse;
+import com.savemoney.rest.filters.FiltroPaginacao;
 import com.savemoney.rest.services.CartaoCreditoService;
 import com.savemoney.rest.services.ContaBancariaService;
 import com.savemoney.templates.models.CartaoCreditoTemplate;
@@ -17,6 +19,7 @@ import com.savemoney.templates.models.ItemCartaoTemplate;
 import com.savemoney.templates.requests.CartaoCreditoRequestTemplate;
 import com.savemoney.templates.requests.ItemCartaoRequestTemplate;
 import com.savemoney.templates.responses.CartaoCreditoResponseTemplate;
+import com.savemoney.templates.responses.ResumoItemCartaoResponseTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +31,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 import static br.com.six2six.fixturefactory.loader.FixtureFactoryLoader.loadTemplates;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -147,7 +151,23 @@ public class CartaoCreditoFacadeTest {
 
     @Test
     public void deveRetornarResumoItensCartao() {
+        ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
+                .gimme(ContaBancariaTemplate.VALIDO);
+        ResumoItemCartaoResponse resumo = Fixture.from(ResumoItemCartaoResponse.class)
+                .gimme(ResumoItemCartaoResponseTemplate.VALIDO);
+        final Long idCartao = 1L;
+        final Integer mes = 12;
+        final Integer ano = 2020;
 
+        Mockito.when(contaBancariaService.recuperarContaBancaria(anyString()))
+                .thenReturn(contaBancaria);
+        Mockito.when(cartaoCreditoService.resumoItensCartao(anyLong(), any(FiltroPaginacao.class), any(ContaBancaria.class)))
+                .thenReturn(resumo);
+
+        ResumoItemCartaoResponse resumoItemCartaoResponse =
+                cartaoCreditoFacade.resumoItensCartao(token, idCartao, mes, ano);
+
+        assertNotNull(resumoItemCartaoResponse);
     }
 
     @Test

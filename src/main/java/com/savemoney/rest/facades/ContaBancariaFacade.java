@@ -1,12 +1,14 @@
 package com.savemoney.rest.facades;
 
 import com.savemoney.domain.mappers.ContaBancariaMapper;
+import com.savemoney.domain.models.Banco;
 import com.savemoney.domain.models.ContaBancaria;
 import com.savemoney.domain.models.Transacao;
 import com.savemoney.domain.pagination.ContasBancariasPagination;
 import com.savemoney.domain.requests.ContaBancariaRequest;
 import com.savemoney.domain.requests.TransacaoRequest;
 import com.savemoney.domain.responses.ContaBancariaResponse;
+import com.savemoney.rest.services.BancoService;
 import com.savemoney.rest.services.ContaBancariaService;
 import com.savemoney.rest.services.TransacaoService;
 import com.savemoney.security.domain.models.Usuario;
@@ -24,6 +26,9 @@ import java.util.Objects;
 public class ContaBancariaFacade {
 
     @Autowired
+    private BancoService bancoService;
+
+    @Autowired
     private ContaBancariaService contaBancariaService;
 
     @Autowired
@@ -35,11 +40,14 @@ public class ContaBancariaFacade {
     private final ContaBancariaMapper contaBancariaMapper =
             Mappers.getMapper(ContaBancariaMapper.class);
 
-    public ContaBancaria adicionar(ContaBancariaRequest request) {
+    public ContaBancaria adicionar(String token, ContaBancariaRequest request) {
         ContaBancaria contaBancaria = contaBancariaMapper.toContaBancaria(request);
+        Usuario usuario = usuarioService.recuperarUsuario(token);
+        contaBancaria.setUsuario(usuario);
+
         if (Objects.nonNull(request.getIdBanco())) {
-            Usuario usuario = usuarioService.buscarPorId(request.getIdBanco());
-            contaBancaria.setUsuario(usuario);
+            Banco banco = bancoService.buscarPorId(request.getIdBanco());
+            contaBancaria.setBanco(banco);
         }
 
         return contaBancariaService.adicionar(contaBancaria);

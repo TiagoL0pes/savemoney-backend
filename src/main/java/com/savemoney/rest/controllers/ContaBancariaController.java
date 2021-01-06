@@ -26,8 +26,9 @@ public class ContaBancariaController extends AbstractController implements Conta
     private ContaBancariaFacade contaBancariaFacade;
 
     @PostMapping
-    public ResponseEntity<Void> adicionar(@Valid @RequestBody ContaBancariaRequest request) {
-        ContaBancaria contaBancaria = contaBancariaFacade.adicionar(request);
+    public ResponseEntity<Void> adicionar(@RequestHeader("Authorization") String token,
+                                          @Valid @RequestBody ContaBancariaRequest request) {
+        ContaBancaria contaBancaria = contaBancariaFacade.adicionar(token, request);
 
         URI uri = montarURIPara("/{id}", contaBancaria.getIdContaBancaria());
 

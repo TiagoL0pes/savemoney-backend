@@ -77,7 +77,7 @@ public class PagamentoFacadeTest {
         ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
                 .gimme(ContaBancariaTemplate.VALIDO);
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         PendenteCommand command = Mockito.mock(PendenteCommand.class);
         final Long idDespesa = 1L;
 

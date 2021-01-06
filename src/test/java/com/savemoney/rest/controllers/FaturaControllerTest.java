@@ -54,7 +54,7 @@ public class FaturaControllerTest {
         FaturaRequest request = Fixture.from(FaturaRequest.class)
                 .gimme(FaturaRequestTemplate.VALIDO);
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
 
         Mockito.when(facade.gerarFatura(any(FaturaRequest.class))).thenReturn(fatura);
 

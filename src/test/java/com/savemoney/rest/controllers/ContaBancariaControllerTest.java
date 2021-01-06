@@ -45,12 +45,15 @@ public class ContaBancariaControllerTest {
     @InjectMocks
     private ContaBancariaController controller;
 
+    private String token;
+
     @BeforeEach
     public void setup() {
         loadTemplates("com.savemoney.templates");
         MockHttpServletRequest request = new MockHttpServletRequest();
         ServletRequestAttributes attributes = new ServletRequestAttributes(request);
         RequestContextHolder.setRequestAttributes(attributes);
+        token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJpZENvbnRhQmFuY2FyaWFcIjoxLFwiZW1haWxcIjpcImFkbWluQGVtYWlsLmNvbVwiLFwiYWdlbmNpYVwiOlwiMDAwMVwiLFwiY29udGFcIjpcIjEyMzQ1NlwifSIsImV4cCI6MTYwOTAwMjU4Mn0.6-Cf6-U41ETexS7qAQt7K_iMCy8xDT_3PAfdxTQG8E9bYV0Law6V_8ld_qwzlrsB8K2ShBTKy7A02TWXEGfStQ";
     }
 
     @Test
@@ -60,9 +63,10 @@ public class ContaBancariaControllerTest {
         ContaBancaria contaBancaria = Fixture.from(ContaBancaria.class)
                 .gimme(ContaBancariaTemplate.VALIDO);
 
-        Mockito.when(facade.adicionar(any(ContaBancariaRequest.class))).thenReturn(contaBancaria);
+        Mockito.when(facade.adicionar(anyString(), any(ContaBancariaRequest.class)))
+                .thenReturn(contaBancaria);
 
-        ResponseEntity<Void> response = controller.adicionar(request);
+        ResponseEntity<Void> response = controller.adicionar(token, request);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }

@@ -43,7 +43,7 @@ public class FaturaServiceTest {
     @Test
     public void deveGerarFatura() {
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
 
         Mockito.when(faturaRepository.save(any(Fatura.class)))
                 .thenReturn(fatura);
@@ -56,7 +56,7 @@ public class FaturaServiceTest {
     @Test
     public void deveBuscarFaturaPorId() {
         Fatura faturaEsperada = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         final Long idFatura = 1L;
 
         Mockito.when(faturaRepository.findById(anyLong()))
@@ -71,7 +71,7 @@ public class FaturaServiceTest {
     @Test
     public void deveListarFaturas() {
         List<Fatura> faturas = Fixture.from(Fatura.class)
-                .gimme(1, FaturaTemplate.VALIDO);
+                .gimme(1, FaturaTemplate.PENDENTE);
         final Long idFatura = 1L;
         final int pagina = 0;
         final int tamanho = 10;
@@ -89,7 +89,7 @@ public class FaturaServiceTest {
     @Test
     public void deveLancarExcecaoQuandoFaturaParaMesJaFoiGerada() {
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
         final LocalDate dataVencimento = LocalDate.now();
 
         Mockito.when(faturaRepository.buscarPorDataVencimento(anyInt(), anyInt()))
@@ -113,7 +113,7 @@ public class FaturaServiceTest {
     @Test
     public void deveAtualizarStatusFatura() {
         Fatura fatura = Fixture.from(Fatura.class)
-                .gimme(FaturaTemplate.VALIDO);
+                .gimme(FaturaTemplate.PENDENTE);
 
         Mockito.when(faturaRepository.save(any(Fatura.class)))
                 .thenReturn(fatura);

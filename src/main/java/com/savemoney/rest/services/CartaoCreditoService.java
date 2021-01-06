@@ -148,7 +148,7 @@ public class CartaoCreditoService extends AbstractService {
 
     private ItemCartao buscarItemNoCartao(Long idItemCartao, CartaoCredito cartaoCredito) {
         return cartaoCredito.getItens().stream()
-                .filter(cartao -> cartao.getIdItemCartao().equals(idItemCartao))
+                .filter(item -> item.getIdItemCartao().equals(idItemCartao))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no cartão de crédito"));
     }

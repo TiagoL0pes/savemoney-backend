@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class ContaBancariaService extends AbstractService {
 
@@ -64,10 +62,8 @@ public class ContaBancariaService extends AbstractService {
     }
 
     private void alterarBanco(ContaBancaria contaBancaria, Long bancoId) {
-        if (Objects.nonNull(bancoId) && bancoId > 0L) {
-            bancoRepository.findById(bancoId)
-                    .ifPresent(contaBancaria::setBanco);
-        }
+        bancoRepository.findById(bancoId)
+                .ifPresent(contaBancaria::setBanco);
     }
 }
 

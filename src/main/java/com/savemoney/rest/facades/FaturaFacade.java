@@ -1,5 +1,6 @@
 package com.savemoney.rest.facades;
 
+import com.savemoney.domain.enums.Mes;
 import com.savemoney.domain.enums.StatusPagamento;
 import com.savemoney.domain.mappers.FaturaMapper;
 import com.savemoney.domain.models.CartaoCredito;
@@ -70,7 +71,8 @@ public class FaturaFacade {
     private LocalDate gerarProximaDataVencimento(Integer diaVencimento) {
         final int DIAS_ANTERIORES_FECHAMENTO = 10;
         LocalDate hoje = LocalDate.now();
-        LocalDate dataFechamento = LocalDate.of(hoje.getYear(), hoje.getMonthValue(), diaVencimento);
+        Integer diaVencimentoAjustado = validaDiaVencimento(diaVencimento);
+        LocalDate dataFechamento = LocalDate.of(hoje.getYear(), hoje.getMonthValue(), diaVencimentoAjustado);
 
         long diferencaDiasEntreHojeEFechamento =
                 Duration.between(hoje.atStartOfDay(), dataFechamento.atStartOfDay()).toDays();
@@ -79,6 +81,25 @@ public class FaturaFacade {
             return dataFechamento.plusMonths(1);
         }
         return LocalDate.of(hoje.getYear(), hoje.getMonth(), diaVencimento);
+    }
+
+    private Integer validaDiaVencimento(Integer diaVencimento) {
+        final Integer DATA_LIMITE_FEVEREIRO = 28;
+        final Integer DATA_LIMITE_FEVEREIRO_BISSEXTO = 29;
+        LocalDate hoje = LocalDate.now();
+
+        if (anoBissexto(hoje.getYear()) && hoje.getDayOfMonth() == Mes.FEVEREIRO.getNumeroMes()) {
+            return DATA_LIMITE_FEVEREIRO_BISSEXTO;
+        }
+        if (diaVencimento >= 29) {
+            return DATA_LIMITE_FEVEREIRO;
+        }
+
+        return diaVencimento;
+    }
+
+    private boolean anoBissexto(Integer ano) {
+        return ano % 4 == 0 && (ano % 400 == 0 || ano % 100 != 0);
     }
 
     private void verificaSeFaturaJaFoiGerada(LocalDate dataVencimento) {

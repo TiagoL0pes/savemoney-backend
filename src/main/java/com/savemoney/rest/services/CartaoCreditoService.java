@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -110,6 +111,9 @@ public class CartaoCreditoService extends AbstractService {
     }
 
     private boolean dataVencimentoParcelaIgualDataRequisitada(Parcela parcela, Integer mes, Integer ano) {
+        if (Objects.isNull(mes) || Objects.isNull(ano)) {
+            return false;
+        }
         return parcela.getDataVencimento().getMonthValue() == mes &&
                 parcela.getDataVencimento().getYear() == ano;
     }

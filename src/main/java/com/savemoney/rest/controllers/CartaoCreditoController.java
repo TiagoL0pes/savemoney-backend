@@ -83,7 +83,7 @@ public class CartaoCreditoController extends AbstractController implements Carta
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("items/{idItem}")
+    @GetMapping("itens/{idItem}")
     public ResponseEntity<ItemCartaoResponse> buscarItemPorId(@RequestHeader("Authorization") String token,
                                                               @PathVariable Long idItem) {
         ItemCartaoResponse response = cartaoCreditoFacade.buscarItemPorId(token, idItem);
@@ -99,10 +99,10 @@ public class CartaoCreditoController extends AbstractController implements Carta
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("{idCartao}/itens")
+    @DeleteMapping("itens/{idItem}")
     public ResponseEntity<Void> removerItemPorId(@RequestHeader("Authorization") String token,
-                                                 @PathVariable Long idCartao) {
-        cartaoCreditoFacade.removerItemPorId(token, idCartao);
+                                                 @PathVariable Long idItem) {
+        cartaoCreditoFacade.removerItemPorId(token, idItem);
         return ResponseEntity.noContent().build();
     }
 

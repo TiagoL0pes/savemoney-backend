@@ -25,6 +25,7 @@ public interface CartaoCreditoMapper extends DefaultMapper {
     @Mapping(target = "itens", source = "cartaoCredito.itens")
     ResumoItemCartaoResponse toResumoItemCartaoResponse(CartaoCredito cartaoCredito);
 
+    @Mapping(target = "valor", source = "valorTotal")
     ItemCartaoResponse toItemCartaoResponse(ItemCartao itemCartao);
 
     CartaoCreditoResponse toCartaoCreditoResponse(CartaoCredito cartaoCredito);

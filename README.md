@@ -38,3 +38,7 @@ Os testes na API podem ser realizados através de um cliente REST de sua prefer�
 ## Como iniciar a aplicação
 Para iniciar a aplicação em TEST, basta definir a propriedade de sistema -Dspring.profiles.active=test. Após a inicialização o banco em memória será atualizado com registros para realização de testes.
 Para iniciar a aplicação em DEV, será necessário rodar o comando docker-compose up no diretório /docker, após isso, basta definir a propriedade de sistema -Dspring.profiles.active=dev.
+
+## Extras
+- Os usuários da IDE Intellij 2020.3+ precisarão adicionar o comando no *build process option* `-Djps.track.ap.dependencies=false` para que seja possível realizar a compilação dos Java Annotation Processors (Lombok e Mapstruct).
+A thread detalhada pode ser acomapnhada aqui [[BUG] Lombok Does not work with IntelliJ EAP 2020.3 Build 203.4203.26](https://github.com/projectlombok/lombok/issues/2592#issuecomment-705449860)
